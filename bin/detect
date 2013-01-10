@@ -5,9 +5,9 @@ set -e
 BUILD_DIR=$1
 echo "Info: BUILD_DIR=${BUILD_DIR}"
 
-PACKAGE_FILE="$(find $BUILD_DIR -maxdepth 2 -name .filetree -print -quit)"
+FILETREE_FILE=`find $BUILD_DIR -maxdepth 2 -name .filetree -print -quit`
 
-if [ -e $PACKAGE_FILE ]; then
+if [ -e "$FILETREE" ]; then
     echo "Squeak (Filetree)" && exit 0
 else
     echo "Not a Squeak build directory" && exit 1
