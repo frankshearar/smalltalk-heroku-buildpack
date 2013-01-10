@@ -1,0 +1,26 @@
+#!/bin/sh
+
+set -e
+
+BUILD_DIR=$1
+echo "Info: BUILD_DIR=$BUILD_DIR"
+CACHE_DIR=$2
+echo "Info: CACHE_DIR=$CACHE_DIR"
+
+[ -z $SQUEAK_VERSION ] && echo "Error: please set SQUEAK_VERSION in environment" && exit 1
+
+if [ -z ${BUILDPACK_SQUEAK_BASE_URL ]; then
+    echo "Error: please set BUILDPACK_SQUEAK_BASE_URL";
+    exit 1;
+else
+    mkdir -p ${CACHE_DIR}
+    pushd ${CACHE_DIR}
+    URL=${BUILDPACK_SQUEAK_BASE_URL}/squeak-heroku-${SQUEAK_VERSION}.tar.bz2
+    echo "Info: Downloading ${URL}"
+    curl -O ${URL}
+    tar jxf squeak-heroku-${SQUEAK_VERSION}.tar.bz2
+    PATH=${CACHE_DIR}/squeak-${SQUEAK_VERSION}/bin:$PATH
+    ln -s ${CACHE_DIR}/squeak-${SQUEAK_VERSION} ${CACHE_DIR}/squeak
+    # STUFF: "cabal update" equivalent
+    popd
+fi
