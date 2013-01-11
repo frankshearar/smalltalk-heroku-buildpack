@@ -1,5 +1,6 @@
 describe "detect" do
   it "should detect a filetree repository" do
+    `bin/detect templates/filetree`
     $?.exitstatus.should == 0
   end
 
