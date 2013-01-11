@@ -1,0 +1,14 @@
+{
+	"category" : "Foo",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "Foo",
+	"pools" : [
+		 ],
+	"super" : "Object",
+	"type" : "normal" }
