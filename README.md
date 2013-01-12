@@ -6,6 +6,8 @@ This is a custom Heroku buildpack for Squeak Smalltalk applications that are bui
 
 EXPERIMENTAL
 
+[![Build Status](https://secure.travis-ci.org/frankshearar/smalltalk-heroku-buildpack.png?branch=master)](http://travis-ci.org/frankshearar/smalltalk-heroku-buildpack)
+
 ## Version / Dependencies
 
 Currently this only supports Squeak 4.4.
