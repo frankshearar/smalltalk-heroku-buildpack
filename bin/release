@@ -4,9 +4,9 @@ BUILD_DIR=$1
 
 cat <<EOF
 config_vars:
-  SQUEAK_VERSION: 4.4
-  BUILDPACK_SQUEAK_BASE_URL: "http://ftp.squeak.org/4.4/
+  SQUEAK_VERSION: "4.4"
+  BUILDPACK_SQUEAK_BASE_URL: "http://ftp.squeak.org/4.4/"
 addons:
   heroku-postgresql:dev
-default_process_types
+default_process_types:
 EOF
