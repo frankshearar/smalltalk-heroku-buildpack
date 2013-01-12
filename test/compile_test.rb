@@ -4,28 +4,29 @@ describe "compile" do
   before :each do
     @buildpack_squeak_base_url = "file://" + File.absolute_path("../test-resources/")
     @squeak_version = "4.4-12327"
-    @cache_dir = "target/"
-    @filetree_repo = "template/filetree"
+    @base_dir = "target/"
+    @build_dir = "templates/filetree"
+    @cache_dir = "target/cache/"
 
-    FileUtils.rm_r(@cache_dir) if Dir.exist?(@cache_dir)
-    Dir.mkdir(@cache_dir)
+    FileUtils.rm_r(@base_dir) if Dir.exist?(@base_dir)
+    FileUtils.mkdir_p(@cache_dir)
   end
 
   it "should fail if both SQUEAK_VERSION and BUILDPACK_SQUEAK_BASE_URL are not set" do
     env = {}
-    status = run(env, "bin/compile #{@filetree_repo} #{@cache_dir}")
+    status = run(env, "bin/compile #{@build_dir} #{@cache_dir}")
     status.exitstatus.should_not == 0
   end
 
   it "should fail if SQUEAK_VERSION is set but not BUILDPACK_SQUEAK_BASE_URL" do
     env = {'SQUEAK_VERSION' => @squeak_version}
-    status = run(env, "bin/compile #{@filetree_repo} #{@cache_dir}")
+    status = run(env, "bin/compile #{@build_dir} #{@cache_dir}")
     status.exitstatus.should_not == 0
   end
   
   it "should fail if BUILDPACK_SQUEAK_BASE_URL is set but not SQUEAK_VERSION" do
     env = {'BUILDPACK_SQUEAK_BASE_URL' => @buildpack_squeak_base_url}
-    status = run(env, "bin/compile #{@filetree_repo} #{@cache_dir}")
+    status = run(env, "bin/compile #{@build_dir} #{@cache_dir}")
     status.exitstatus.should_not == 0
   end
 end
@@ -35,12 +36,12 @@ describe "compiling with both SQUEAK_VERSION and BUILDPACK_SQUEAK_BASE_URL" do
     @buildpack_squeak_base_url = "file://" + File.absolute_path("test-resources/")
     @squeak_version = "4.4-12327"
     @cache_dir = File.absolute_path("target")
-    @filetree_repo = "template/filetree"
+    @build_dir = "template/filetree"
     @env = {'SQUEAK_VERSION' => @squeak_version, 'BUILDPACK_SQUEAK_BASE_URL' => @buildpack_squeak_base_url}
 
     FileUtils.rm_r(@cache_dir) if Dir.exist?(@cache_dir)
 
-    @status = run(@env, "bin/compile #{@filetree_repo} #{@cache_dir}")
+    @status = run(@env, "bin/compile #{@build_dir} #{@cache_dir}")
   end
 
   it "should succeed" do
