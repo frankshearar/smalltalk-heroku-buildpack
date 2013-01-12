@@ -1,6 +1,4 @@
-def run cmd
-  system cmd
-end
+require_relative 'spec_helper'
 
 describe "compile" do
   before :each do
@@ -14,18 +12,21 @@ describe "compile" do
   end
 
   it "should fail if both SQUEAK_VERSION and BUILDPACK_SQUEAK_BASE_URL are not set" do
-    run "bin/compile #{@filetree_repo} #{@cache_dir}"
-    $?.exitstatus.should_not == 0
+    env = {}
+    status = run(env, "bin/compile #{@filetree_repo} #{@cache_dir}")
+    status.exitstatus.should_not == 0
   end
 
   it "should fail if SQUEAK_VERSION is set but not BUILDPACK_SQUEAK_BASE_URL" do
-    run "SQUEAK_VERSION=#{@squeak_version} bin/compile #{@filetree_repo} #{@cache_dir}"
-    $?.exitstatus.should_not == 0
+    env = {'SQUEAK_VERSION' => @squeak_version}
+    status = run(env, "bin/compile #{@filetree_repo} #{@cache_dir}")
+    status.exitstatus.should_not == 0
   end
   
   it "should fail if BUILDPACK_SQUEAK_BASE_URL is set but not SQUEAK_VERSION" do
-    run "BUILDPACK_SQUEAK_BASE_URL='#{@buildpack_squeak_base_url}' bin/compile #{@filetree_repo} #{@cache_dir}"
-    $?.exitstatus.should_not == 0
+    env = {'BUILDPACK_SQUEAK_BASE_URL' => @buildpack_squeak_base_url}
+    status = run(env, "bin/compile #{@filetree_repo} #{@cache_dir}")
+    status.exitstatus.should_not == 0
   end
 end
 
@@ -35,10 +36,11 @@ describe "compiling with both SQUEAK_VERSION and BUILDPACK_SQUEAK_BASE_URL" do
     @squeak_version = "4.4-12327"
     @cache_dir = File.absolute_path("target")
     @filetree_repo = "template/filetree"
+    @env = {'SQUEAK_VERSION' => @squeak_version, 'BUILDPACK_SQUEAK_BASE_URL' => @buildpack_squeak_base_url}
 
     FileUtils.rm_r(@cache_dir) if Dir.exist?(@cache_dir)
 
-    @status = run "SQUEAK_VERSION=#{@squeak_version} BUILDPACK_SQUEAK_BASE_URL='#{@buildpack_squeak_base_url}' bin/compile #{@filetree_repo} #{@cache_dir}"
+    @status = run(@env, "bin/compile #{@filetree_repo} #{@cache_dir}")
   end
 
   it "should succeed" do
