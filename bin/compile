@@ -9,18 +9,22 @@ echo "Info: CACHE_DIR=$CACHE_DIR"
 
 [ -z $SQUEAK_VERSION ] && echo "Error: please set SQUEAK_VERSION in environment" && exit 1
 
-if [ -z ${BUILDPACK_SQUEAK_BASE_URL ]; then
+if [ -z ${BUILDPACK_SQUEAK_BASE_URL} ]; then
     echo "Error: please set BUILDPACK_SQUEAK_BASE_URL";
     exit 1;
 else
+    MAJOR_VERSION=`echo ${SQUEAK_VERSION} | cut -d"-" -f1`
+
     mkdir -p ${CACHE_DIR}
-    pushd ${CACHE_DIR}
-    URL=${BUILDPACK_SQUEAK_BASE_URL}/squeak-heroku-${SQUEAK_VERSION}.tar.bz2
-    echo "Info: Downloading ${URL}"
-    curl -O ${URL}
-    tar jxf squeak-heroku-${SQUEAK_VERSION}.tar.bz2
-    PATH=${CACHE_DIR}/squeak-${SQUEAK_VERSION}/bin:$PATH
-    ln -s ${CACHE_DIR}/squeak-${SQUEAK_VERSION} ${CACHE_DIR}/squeak
-    # STUFF: "cabal update" equivalent
-    popd
+    (cd ${CACHE_DIR} && \
+	URL=${BUILDPACK_SQUEAK_BASE_URL}/${MAJOR_VERSION}/Squeak${SQUEAK_VERSION}.zip && \
+	echo "Info: Downloading ${URL}" && \
+	curl -O ${URL} && \
+	unzip -o Squeak${SQUEAK_VERSION}.zip && \
+	VMURL=${BUILDPACK_SQUEAK_BASE_URL}/${MAJOR_VERSION}/unix-linux/coglinux.tgz && \
+	echo "Info: Downloading ${VMURL}" && \
+	curl -O ${VMURL} && \
+	tar zxf coglinux.tgz &&
+	echo "Right now, Smalltalk has no 'cabal update' equivalent" && exit 0
+    )
 fi
