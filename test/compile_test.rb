@@ -36,7 +36,7 @@ describe "compiling with both SQUEAK_VERSION and BUILDPACK_SQUEAK_BASE_URL" do
     @buildpack_squeak_base_url = "file://" + File.absolute_path("test-resources/")
     @squeak_version = "4.4-12327"
     @cache_dir = File.absolute_path("target")
-    @build_dir = "template/filetree"
+    @build_dir = "templates/filetree"
     @env = {'SQUEAK_VERSION' => @squeak_version, 'BUILDPACK_SQUEAK_BASE_URL' => @buildpack_squeak_base_url}
 
     FileUtils.rm_r(@cache_dir) if Dir.exist?(@cache_dir)
@@ -53,11 +53,13 @@ describe "compiling with both SQUEAK_VERSION and BUILDPACK_SQUEAK_BASE_URL" do
   end
 
   it "should have a Squeak image" do
-    Dir.entries("target").detect(nil) { |fn| /Squeak.*\.image/.match(fn) }.should_not be_nil
-    Dir.entries("target").detect(nil) { |fn| /Squeak.*\.changes/.match(fn) }.should_not be_nil
+    Dir.entries("target").should include("Squeak-4.4-12327")
+    Dir.entries("target/Squeak-4.4-12327").detect(nil) { |fn| /Squeak.*\.image/.match(fn) }.should_not be_nil
+    Dir.entries("target/Squeak-4.4-12327").detect(nil) { |fn| /Squeak.*\.changes/.match(fn) }.should_not be_nil
   end
 
   it "should have a virtual machine" do
-    Dir.entries("target").detect(nil) { |fn| fn.include?("coglinux\.fake.vm") }.should_not be_nil
+    Dir.entries("target").should include("cog.r2640")
+    Dir.entries("target/cog.r2640").detect(nil) { |fn| fn.include?("coglinux\.fake.vm") }.should_not be_nil
   end
 end

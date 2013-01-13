@@ -4,25 +4,48 @@
 # Fail fast
 set -e
 
-BUILD_DIR=$1
-echo "Info: BUILD_DIR=$BUILD_DIR"
+BUILD_DIR=$(cd "$1" && pwd)
 CACHE_DIR=$2
-echo "Info: CACHE_DIR=$CACHE_DIR"
 
-[ -z ${SQUEAK_VERSION} ] && echo "Error: please set SQUEAK_VERSION in environment" && exit 1
-[ -z ${BUILDPACK_SQUEAK_BASE_URL} ] && echo "Error: please set BUILDPACK_SQUEAK_BASE_URL" && exit 1;
+echo "-----> BUILD_DIR=${BUILD_DIR}"
+echo "-----> CACHE_DIR=${CACHE_DIR}"
 
-MAJOR_VERSION=`echo ${SQUEAK_VERSION} | cut -d"-" -f1`
+[ -z ${SQUEAK_VERSION} ] && echo "!      Please set SQUEAK_VERSION in environment" && exit 1
+[ -z ${BUILDPACK_SQUEAK_BASE_URL} ] && echo "!      Please set BUILDPACK_SQUEAK_BASE_URL" && exit 1;
+
+MAJOR_VERSION="$(echo ${SQUEAK_VERSION} | cut -d"-" -f1)"
+IMAGE_URL=${BUILDPACK_SQUEAK_BASE_URL}/${MAJOR_VERSION}/Squeak${SQUEAK_VERSION}.zip
+VM_URL=${BUILDPACK_SQUEAK_BASE_URL}/${MAJOR_VERSION}/unix-linux/coglinux.tgz
 
 mkdir -p ${CACHE_DIR}
-(cd ${CACHE_DIR} && \
-    URL=${BUILDPACK_SQUEAK_BASE_URL}/${MAJOR_VERSION}/Squeak${SQUEAK_VERSION}.zip && \
-    echo "Info: Downloading ${URL}" && \
-    curl -O ${URL} && \
-    unzip -o Squeak${SQUEAK_VERSION}.zip && \
-    VMURL=${BUILDPACK_SQUEAK_BASE_URL}/${MAJOR_VERSION}/unix-linux/coglinux.tgz && \
-    echo "Info: Downloading ${VMURL}" && \
-    curl -O ${VMURL} && \
-    tar zxf coglinux.tgz &&
-    echo "Right now, Smalltalk has no 'cabal update' equivalent" && exit 0
-)
+
+# Set up the VM
+if test -d ${CACHE_DIR}/cog.r2640/
+then
+    echo "-----> Using Cog r2640"
+else
+    echo "-----> Downloading Cog r2640"
+    rm -rf ${CACHE_DIR}/cog*
+    mkdir -p ${CACHE_DIR}/cog.r2640/
+    cd ${CACHE_DIR}/cog.r2640/
+    curl --silent --show-error --max-time 60 -L -O ${VM_URL}
+    tar zxf coglinux.tgz
+    rm coglinux.tgz
+fi
+
+# Set up the base image
+if test -d ${CACHE_DIR}/${SQUEAK_VERSION}/
+then
+    echo "-----> Using Squeak ${SQUEAK_VERSION}"
+else
+    echo "-----> Downloading Squeak ${SQUEAK_VERSION}"
+    rm -rf ${CACHE_DIR}/Squeak-${SQUEAK_VERSION}*
+    mkdir -p ${CACHE_DIR}/Squeak-${SQUEAK_VERSION}
+    cd ${CACHE_DIR}/Squeak-${SQUEAK_VERSION}
+    curl --silent --show-error --max-time 60 -L -O ${IMAGE_URL}
+    unzip -o Squeak${SQUEAK_VERSION}.zip
+    rm Squeak${SQUEAK_VERSION}.zip
+fi
+
+# Install the application
+${CACHE_DIR}/cog.r2640/coglinux/bin/squeak --vm-headless --vm-no-sound ${CACHE_DIR}/Squeak-${SQUEAK_VERSION}/Squeak${SQUEAK_VERSION}.image setup.st
