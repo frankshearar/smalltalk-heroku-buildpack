@@ -37,7 +37,11 @@ describe "compiling with both SQUEAK_VERSION and BUILDPACK_SQUEAK_BASE_URL" do
     @squeak_version = "4.4-12327"
     @cache_dir = File.absolute_path("target")
     @build_dir = "templates/filetree"
-    @env = {'SQUEAK_VERSION' => @squeak_version, 'BUILDPACK_SQUEAK_BASE_URL' => @buildpack_squeak_base_url}
+    @env = {
+      'SQUEAK_VERSION' => @squeak_version,
+      'BUILDPACK_SQUEAK_BASE_URL' => @buildpack_squeak_base_url,
+      'SKIP_INSTALLATION' => 'YES'
+    }
 
     FileUtils.rm_r(@cache_dir) if Dir.exist?(@cache_dir)
 

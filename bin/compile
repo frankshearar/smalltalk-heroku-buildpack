@@ -47,5 +47,12 @@ else
     rm Squeak${SQUEAK_VERSION}.zip
 fi
 
-# Install the application
-${CACHE_DIR}/cog.r2640/coglinux/bin/squeak --vm-headless --vm-no-sound ${CACHE_DIR}/Squeak-${SQUEAK_VERSION}/Squeak${SQUEAK_VERSION}.image setup.st
+# Install the application, unless (for testing purposes) we
+# deliberately skip this step.
+if test -z SKIP_INSTALLATION
+then
+    echo "-----> Installing application"
+    ${CACHE_DIR}/cog.r2640/coglinux/bin/squeak --vm-headless --vm-no-sound ${CACHE_DIR}/Squeak-${SQUEAK_VERSION}/Squeak${SQUEAK_VERSION}.image setup.st
+else
+    echo "-----> Skipping installation"
+fi
