@@ -17,7 +17,7 @@ Installer ss
     install: 'OSProcess-dtl.73'.
 
 "How do we find the actual repository? It's _by definition_ BUILD_DIR."
-source := (Smalltalk at: #MCFileTreeRepository) path: ((Smalltalk at: UnixProcess) env at: 'BUILD_DIR').
+source := (Smalltalk at: #MCFileTreeRepository) path: ((Smalltalk at: #UnixProcess) env at: 'BUILD_DIR').
 packages := source allPackageNames.
 
 "Load in the latest versions (for filetree there ought to be only one version
