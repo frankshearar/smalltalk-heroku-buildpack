@@ -1,4 +1,4 @@
-| source packages |
+| log source packages |
 
 log := [:msg | | str |
     str := DateAndTime now printString, ': ', msg.
