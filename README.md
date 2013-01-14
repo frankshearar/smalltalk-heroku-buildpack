@@ -26,11 +26,28 @@ your Heroku application. Something like the following:
 You will also need to specify environment variables after your app is
 created. For instance,
 
-    BUILDPACK_GHC_BASE_URL
-    GHC_VERSION
+    BUILDPACK_SQUEAK_BASE_URL
+    SQUEAK_VERSION
 
 These should be your S3 base URL for the Smalltalk bootstrap and Platform
 distributions respectively.
+
+## DIRECTORY STRUCTURE
+
+This buildpack's `CACHE_DIR` has a particular layout:
+
+```
+CACHE_DIR
+  +- cog.rNNNN
+      +- coglinux (containing a Cog VM in its usual layout)
+  +- Squeak-M.N-KKKK
+      +- SqueakM.N-KKKK.image
+      +- SqueakM.N-KKKK.changes
+```
+
+where `M`, `N`, `NNNN` and `KKKK` are all positive integers.
+
+For the experienced Smalltalkers, you'll note the absence of a sources file. That might change in the future, but it's missing for now because there's much less need for viewing source in a headless image.
 
 ## ACKNOWLEDGEMENTS
 

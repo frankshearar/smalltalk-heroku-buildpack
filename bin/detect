@@ -5,7 +5,6 @@
 set -e
 
 BUILD_DIR=$1
-echo "Info: BUILD_DIR=${BUILD_DIR}"
 
 FILETREE_FILE=`find $BUILD_DIR -maxdepth 2 -name .filetree -print -quit`
 

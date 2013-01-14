@@ -4,6 +4,7 @@
 # Fail fast
 set -e
 
+BASE_DIR=$(cd . && pwd)
 BUILD_DIR=$(cd "$1" && pwd)
 CACHE_DIR=$2
 
@@ -14,7 +15,11 @@ echo "-----> CACHE_DIR=${CACHE_DIR}"
 [ -z ${BUILDPACK_SQUEAK_BASE_URL} ] && echo "!      Please set BUILDPACK_SQUEAK_BASE_URL" && exit 1;
 
 MAJOR_VERSION="$(echo ${SQUEAK_VERSION} | cut -d"-" -f1)"
+# This is utterly retarded.
+#SOURCES_VERSION="$(echo ${MAJOR_VERSION} | cut -d"." -f1)$(echo ${MAJOR_VERSION} | cut -d"." -f2)"
+SOURCES_VERSION=41
 IMAGE_URL=${BUILDPACK_SQUEAK_BASE_URL}/${MAJOR_VERSION}/Squeak${SQUEAK_VERSION}.zip
+SOURCES_URL=${BUILDPACK_SQUEAK_BASE_URL}/${MAJOR_VERSION}/SqueakV${SOURCES_VERSION}.sources.gz
 VM_URL=${BUILDPACK_SQUEAK_BASE_URL}/${MAJOR_VERSION}/unix-linux/coglinux.tgz
 
 mkdir -p ${CACHE_DIR}
@@ -43,16 +48,28 @@ else
     mkdir -p ${CACHE_DIR}/Squeak-${SQUEAK_VERSION}
     cd ${CACHE_DIR}/Squeak-${SQUEAK_VERSION}
     curl --silent --show-error --max-time 60 -L -O ${IMAGE_URL}
+    curl --silent --show-error --max-time 60 -L -O ${SOURCES_URL}
     unzip -o Squeak${SQUEAK_VERSION}.zip
+    gunzip SqueakV${SOURCES_VERSION}.sources.gz
     rm Squeak${SQUEAK_VERSION}.zip
 fi
 
 # Install the application, unless (for testing purposes) we
 # deliberately skip this step.
-if test -z SKIP_INSTALLATION
+if test -z "${SKIP_INSTALLATION}"
 then
     echo "-----> Installing application"
-    ${CACHE_DIR}/cog.r2640/coglinux/bin/squeak --vm-headless --vm-no-sound ${CACHE_DIR}/Squeak-${SQUEAK_VERSION}/Squeak${SQUEAK_VERSION}.image setup.st
+    REPO_TYPE="$(${BASE_DIR}/bin/detect ${BUILD_DIR})"
+    INSTALLER="We couldn't identify the repository."
+    case ${REPO_TYPE} in
+	"Squeak (Filetree)")
+	    INSTALLER="filetree-installer.st"
+	    # Find the Configuration and run it?
+	    ;;
+	*) echo "!      Unknown repository 'type ${REPO_TYPE}'" && exit 1;;
+    esac
+#-vm-display-null
+    ${CACHE_DIR}/cog.r2640/coglinux/bin/squeak  -vm-sound-null ${CACHE_DIR}/Squeak-${SQUEAK_VERSION}/Squeak${SQUEAK_VERSION}.image ${BASE_DIR}/installers/filetree-installer.st
 else
     echo "-----> Skipping installation"
 fi
