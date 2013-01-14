@@ -58,6 +58,7 @@ describe "compiling with both SQUEAK_VERSION and BUILDPACK_SQUEAK_BASE_URL" do
 
   it "should have a Squeak image" do
     Dir.entries("target").should include("Squeak-4.4-12327")
+    puts Dir.entries("target/Squeak-4.4-12327")
     Dir.entries("target/Squeak-4.4-12327").detect(nil) { |fn| /Squeak.*\.image/.match(fn) }.should_not be_nil
     Dir.entries("target/Squeak-4.4-12327").detect(nil) { |fn| /Squeak.*\.changes/.match(fn) }.should_not be_nil
   end
