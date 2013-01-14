@@ -13,7 +13,7 @@ Installer ss3
 
 log value: '-----> Installing OSProcess'.
 Installer ss
-    project: 'OSProcess'
+    project: 'OSProcess';
     install: 'OSProcess-dtl.73'.
 
 "How do we find the actual repository? It's _by definition_ BUILD_DIR."
