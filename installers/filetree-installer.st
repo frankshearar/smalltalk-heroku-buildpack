@@ -1,17 +1,17 @@
 | log source packages |
 
 log := [:msg | | str |
-    str := DateAndTime now printString, ': ', msg.
+    str := '-----> ', msg.
     FileStream stdout nextPutAll: str; nextPut: Character lf; flush.
     Transcript cr; show: str].
 
-log value: '-----> Installing filetree'.
+log value: 'Installing filetree'.
 Installer ss3
     project: 'FileTree';
     install: 'ConfigurationOfFileTree'.
 ((Smalltalk at: #ConfigurationOfFileTree) project version: '1.0') load.
 
-log value: '-----> Installing OSProcess'.
+log value: 'Installing OSProcess'.
 Installer ss
     project: 'OSProcess';
     install: 'OSProcess-dtl.73'.
@@ -30,5 +30,5 @@ packages do: [:pkg |
     pkg startsWith: 'ConfigurationOf'])
         collect: #asSymbol)
             do: [:conf |
-                log value: '-----> Installing ', conf.
+                log value: 'Installing ', conf.
                 (Smalltalk at: conf) loadStable].
