@@ -21,7 +21,7 @@ source := (Smalltalk at: #MCFileTreeRepository) path: ((Smalltalk at: #UnixProce
 packages := source allPackageNames.
 
 "Load in the latest versions (for filetree there ought to be only one version
- per package."
+ per package)."
 packages do: [:pkg |
     (source highestNumberedVersionForPackageNamed: pkg) load].
 
