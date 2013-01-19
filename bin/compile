@@ -11,8 +11,8 @@ CACHE_DIR=$2
 echo "-----> BUILD_DIR=${BUILD_DIR}"
 echo "-----> CACHE_DIR=${CACHE_DIR}"
 
-[ -z ${SQUEAK_VERSION} ] && echo "!      Please set SQUEAK_VERSION in environment" && exit 1
-[ -z ${BUILDPACK_SQUEAK_BASE_URL} ] && echo "!      Please set BUILDPACK_SQUEAK_BASE_URL" && exit 1;
+[ -z ${SQUEAK_VERSION} ] && echo " !     Please set SQUEAK_VERSION in environment" && exit 1
+[ -z ${BUILDPACK_SQUEAK_BASE_URL} ] && echo " !     Please set BUILDPACK_SQUEAK_BASE_URL" && exit 1;
 
 MAJOR_VERSION="$(echo ${SQUEAK_VERSION} | cut -d"-" -f1)"
 # This is utterly retarded.
@@ -66,7 +66,7 @@ then
 	    INSTALLER="filetree-installer.st"
 	    # Find the Configuration and run it?
 	    ;;
-	*) echo "!      Unknown repository 'type ${REPO_TYPE}'" && exit 1;;
+	*) echo " !     Unknown repository 'type ${REPO_TYPE}'" && exit 1;;
     esac
     export BUILD_DIR
     ${CACHE_DIR}/cog.r2640/coglinux/bin/squeak -vm-display-null -vm-sound-null ${CACHE_DIR}/Squeak-${SQUEAK_VERSION}/Squeak${SQUEAK_VERSION}.image ${BASE_DIR}/installers/filetree-installer.st
