@@ -23,7 +23,7 @@ MAJOR_VERSION="$(echo ${SQUEAK_VERSION} | cut -d"-" -f1)"
 # This is utterly retarded.
 #SOURCES_VERSION="$(echo ${MAJOR_VERSION} | cut -d"." -f1)$(echo ${MAJOR_VERSION} | cut -d"." -f2)"
 SOURCES_VERSION=41
-IMAGE_URL=${BUILDPACK_SQUEAK_BASE_URL}/${MAJOR_VERSION}/Squeak${SQUEAK_VERSION}.zip
+IMAGE_URL=${BUILDPACK_SQUEAK_BASE_URL}/${MAJOR_VERSION}/Squeak${SQUEAK_VERSION}.tgz
 SOURCES_URL=${BUILDPACK_SQUEAK_BASE_URL}/${MAJOR_VERSION}/SqueakV${SOURCES_VERSION}.sources.gz
 VM_URL=${BUILDPACK_SQUEAK_BASE_URL}/${MAJOR_VERSION}/unix-linux/coglinux.tgz
 
@@ -54,7 +54,7 @@ else
     cd ${CACHE_DIR}/Squeak-${SQUEAK_VERSION}
     curl --silent --show-error --max-time 60 -L -O ${IMAGE_URL}
     curl --silent --show-error --max-time 60 -L -O ${SOURCES_URL}
-    unzip -o Squeak${SQUEAK_VERSION}.zip
+    tar zxvf Squeak${SQUEAK_VERSION}.tgz
     gunzip SqueakV${SOURCES_VERSION}.sources.gz
     rm Squeak${SQUEAK_VERSION}.zip
 fi
