@@ -12,9 +12,12 @@ echo "-----> BUILD_DIR=${BUILD_DIR}"
 echo "-----> CACHE_DIR=${CACHE_DIR}"
 
 SQUEAK_VERSION="4.4-12327"
-BUILDPACK_SQUEAK_BASE_URL="http://ftp.squeak.org/4.4/"
+BUILDPACK_SQUEAK_BASE_URL="http://ftp.squeak.org/"
 [ -z ${SQUEAK_VERSION} ] && echo " !     Please set SQUEAK_VERSIONx" && exit 1
 [ -z ${BUILDPACK_SQUEAK_BASE_URL} ] && echo " !     Please set BUILDPACK_SQUEAK_BASE_URL" && exit 1;
+
+echo "-----> Building application using Squeak ${SQUEAK_VERSION}"
+echo "-----> Fetching artifacts from ${BUILDPACK_SQUEAK_BASE_URL}"
 
 MAJOR_VERSION="$(echo ${SQUEAK_VERSION} | cut -d"-" -f1)"
 # This is utterly retarded.
