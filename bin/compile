@@ -11,7 +11,7 @@ CACHE_DIR=$2
 echo "-----> BUILD_DIR=${BUILD_DIR}"
 echo "-----> CACHE_DIR=${CACHE_DIR}"
 
-[ -z ${SQUEAK_VERSION} ] && echo " !     Please set SQUEAK_VERSION in environment" && exit 1
+[ -z ${SQUEAK_VERSION} ] && echo " !     Please set SQUEAK_VERSION" && exit 1
 [ -z ${BUILDPACK_SQUEAK_BASE_URL} ] && echo " !     Please set BUILDPACK_SQUEAK_BASE_URL" && exit 1;
 
 MAJOR_VERSION="$(echo ${SQUEAK_VERSION} | cut -d"-" -f1)"
