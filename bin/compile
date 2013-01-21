@@ -56,7 +56,7 @@ else
     curl --silent --show-error --max-time 60 -L -O ${SOURCES_URL}
     tar zxvf Squeak${SQUEAK_VERSION}.tgz
     gunzip SqueakV${SOURCES_VERSION}.sources.gz
-    rm Squeak${SQUEAK_VERSION}.zip
+    rm Squeak${SQUEAK_VERSION}.tgz
 fi
 
 # Install the application, unless (for testing purposes) we
