@@ -37,10 +37,10 @@ else
     echo "-----> Downloading Cog r2640"
     rm -rf ${CACHE_DIR}/cog*
     mkdir -p ${CACHE_DIR}/cog.r2640/
-    cd ${CACHE_DIR}/cog.r2640/
-    curl --silent --show-error --max-time 60 -L -O ${VM_URL}
-    tar zxf coglinux.tgz
-    rm coglinux.tgz
+    (cd ${CACHE_DIR}/cog.r2640/ && \
+      curl --silent --show-error --max-time 60 -L -O ${VM_URL} && \
+      tar zxf coglinux.tgz && \
+      rm coglinux.tgz)
 fi
 
 # Set up the base image
@@ -51,12 +51,12 @@ else
     echo "-----> Downloading Squeak ${SQUEAK_VERSION}"
     rm -rf ${CACHE_DIR}/Squeak-${SQUEAK_VERSION}*
     mkdir -p ${CACHE_DIR}/Squeak-${SQUEAK_VERSION}
-    cd ${CACHE_DIR}/Squeak-${SQUEAK_VERSION}
-    curl --silent --show-error --max-time 60 -L -O ${IMAGE_URL}
-    curl --silent --show-error --max-time 60 -L -O ${SOURCES_URL}
-    tar zxvf Squeak${SQUEAK_VERSION}.tgz
-    gunzip SqueakV${SOURCES_VERSION}.sources.gz
-    rm Squeak${SQUEAK_VERSION}.tgz
+    (cd ${CACHE_DIR}/Squeak-${SQUEAK_VERSION} && \
+      curl --silent --show-error --max-time 60 -L -O ${IMAGE_URL} && \
+      curl --silent --show-error --max-time 60 -L -O ${SOURCES_URL} && \
+      tar zxvf Squeak${SQUEAK_VERSION}.tgz && \
+      gunzip SqueakV${SOURCES_VERSION}.sources.gz && \
+      rm Squeak${SQUEAK_VERSION}.tgz)
 fi
 
 # Install the application, unless (for testing purposes) we
@@ -69,7 +69,6 @@ then
     case ${REPO_TYPE} in
 	"Squeak (Filetree)")
 	    INSTALLER="filetree-installer.st"
-	    # Find the Configuration and run it?
 	    ;;
 	*) echo " !     Unknown repository 'type ${REPO_TYPE}'" && exit 1;;
     esac
