@@ -5,7 +5,7 @@
 set -e
 
 SCRIPT=`readlink -f $0`
-BASE_DIR=`dirname $SCRIPT`
+BASE_DIR=`dirname $SCRIPT`/../
 BUILD_DIR=$(cd "$1" && pwd)
 CACHE_DIR=$2
 
