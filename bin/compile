@@ -13,11 +13,13 @@ echo "-----> BUILD_DIR=${BUILD_DIR}"
 echo "-----> CACHE_DIR=${CACHE_DIR}"
 
 SQUEAK_VERSION="4.4-12327"
+VM_VERSION="4.10.2.2614"
 BUILDPACK_SQUEAK_BASE_URL="http://ftp.squeak.org/"
 [ -z ${SQUEAK_VERSION} ] && echo " !     Please set SQUEAK_VERSIONx" && exit 1
+[ -z ${VM_VERSION} ] && echo " !     Please set VM_VERSIONx" && exit 1
 [ -z ${BUILDPACK_SQUEAK_BASE_URL} ] && echo " !     Please set BUILDPACK_SQUEAK_BASE_URL" && exit 1;
 
-echo "-----> Building application using Squeak ${SQUEAK_VERSION}"
+echo "-----> Building application using Squeak ${SQUEAK_VERSION} on a ${VM_VERSION} VM"
 echo "-----> Fetching artifacts from ${BUILDPACK_SQUEAK_BASE_URL}"
 
 MAJOR_VERSION="$(echo ${SQUEAK_VERSION} | cut -d"-" -f1)"
@@ -26,22 +28,30 @@ MAJOR_VERSION="$(echo ${SQUEAK_VERSION} | cut -d"-" -f1)"
 SOURCES_VERSION=41
 IMAGE_URL=${BUILDPACK_SQUEAK_BASE_URL}/${MAJOR_VERSION}/Squeak${SQUEAK_VERSION}.tgz
 SOURCES_URL=${BUILDPACK_SQUEAK_BASE_URL}/${MAJOR_VERSION}/SqueakV${SOURCES_VERSION}.sources.gz
-VM_URL=${BUILDPACK_SQUEAK_BASE_URL}/${MAJOR_VERSION}/unix-linux/coglinux.tgz
+#VM_URL=${BUILDPACK_SQUEAK_BASE_URL}/${MAJOR_VERSION}/unix-linux/coglinux.tgz
+VM_URL="http://www.squeakvm.org/unix/release/Squeak-4.10.2.2614-linux_x86_64.sh"
 
 mkdir -p ${CACHE_DIR}
 
 # Set up the VM
-if test -d ${CACHE_DIR}/cog.r2640/
+if test -d ${CACHE_DIR}/${VM_VERSION}/
 then
-    echo "-----> Using Cog r2640"
+    echo "-----> Using ${VM_VERSION}"
 else
-    echo "-----> Downloading Cog r2640"
-    rm -rf ${CACHE_DIR}/cog*
-    mkdir -p ${CACHE_DIR}/cog.r2640/
-    (cd ${CACHE_DIR}/cog.r2640/ && \
-      curl --silent --show-error --max-time 60 -L -O ${VM_URL} && \
-      tar zxf coglinux.tgz && \
-      rm coglinux.tgz)
+    echo "-----> Downloading ${VM_VERSION}"
+    rm -rf ${CACHE_DIR}/vm*
+    mkdir -p ${CACHE_DIR}/vm.${VM_VERSION}/
+    # TODO: parameterise to handle both Cog64 and Interpreter VMs.
+    (cd ${CACHE_DIR}/vm.${VM_VERSION}/ && \
+	curl ${VM_URL} > vm-installer.sh && \
+	./vm-installer.sh -prefix=. && \
+        rm vm-installer.sh)
+    VM=${CACHE_DIR}/vm.${VM_VERSION}/bin/squeak
+# Remnants of Cog downloading.
+#      curl --silent --show-error --max-time 60 -L -O ${VM_URL} && \
+#      tar zxf coglinux.tgz && \
+#      rm coglinux.tgz)
+#    VM=${CACHE_DIR}/vm.${VM_VERSION}/coglinux/bin/squeak
 fi
 
 # Set up the base image
@@ -74,7 +84,7 @@ then
 	*) echo " !     Unknown repository 'type ${REPO_TYPE}'" && exit 1;;
     esac
     export BUILD_DIR
-    ${CACHE_DIR}/cog.r2640/coglinux/bin/squeak -vm-display-null -vm-sound-null ${CACHE_DIR}/Squeak-${SQUEAK_VERSION}/Squeak${SQUEAK_VERSION}.image ${BASE_DIR}/installers/filetree-installer.st
+    ${VM} -vm-display-null -vm-sound-null ${CACHE_DIR}/Squeak-${SQUEAK_VERSION}/Squeak${SQUEAK_VERSION}.image ${BASE_DIR}/installers/filetree-installer.st
 else
     echo "-----> Skipping installation"
 fi
