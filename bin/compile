@@ -44,7 +44,7 @@ else
     # TODO: parameterise to handle both Cog64 and Interpreter VMs.
     (cd ${CACHE_DIR}/vm.${VM_VERSION}/ && \
 	curl ${VM_URL} > vm-installer.sh && \
-	./vm-installer.sh -prefix=. && \
+	/bin/sh ./vm-installer.sh -prefix=. && \
         rm vm-installer.sh)
     VM=${CACHE_DIR}/vm.${VM_VERSION}/bin/squeak
 # Remnants of Cog downloading.
