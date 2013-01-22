@@ -44,6 +44,7 @@ else
     # TODO: parameterise to handle both Cog64 and Interpreter VMs.
     (cd ${CACHE_DIR}/vm.${VM_VERSION}/ && \
 	curl -O ${VM_URL} && \
+	tar zxvf Squeak-4.10.2.2614-linux_x86_64.tar.gz && \
 	cd Squeak-4.10.2.2614-linux_x86_64/platforms/unix && \
         make WIDTH=64)
     VM=${CACHE_DIR}/vm.${VM_VERSION}/bin/squeak
