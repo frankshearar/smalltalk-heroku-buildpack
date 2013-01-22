@@ -4,6 +4,10 @@
 # Fail fast
 set -e
 
+indent() {
+    sed -u 's/^/       /'
+}
+
 SCRIPT=`readlink -f $0`
 BASE_DIR=`dirname $SCRIPT`/../
 BUILD_DIR=$(cd "$1" && pwd)
@@ -38,17 +42,33 @@ if test -d ${CACHE_DIR}/${VM_VERSION}/
 then
     echo "-----> Using ${VM_VERSION}"
 else
+    echo "-----> Bootstrapping cmake"
+    CMAKE_VERSION="2.8.6"
+    CMAKE_URL="http://www.cmake.org/files/v2.8/cmake-2.8.6.tar.gz"
+    CMAKE_FILE="cmake-${cmake_version}.tar.gz"
+    CMAKE_TAR_DIR="cmake-${cmake_version}"
+    TARGET=/app/.local
+    echo "Compiling cmake v${cmake_version}..." | indent
+    #Compile cmake
+    curl -s ${CMAKE_URL} > ${CMAKE_FILE}
+    tar zxf ${CMAKE_FILE}
+    (cd ${CMAKE_TAR_DIR} && \
+	./bootstrap --prefix=${TARGET} | indent && \
+	make | indent && \
+	make install | indent && \
+	PATH=${target}/bin:$PATH)
+
     echo "-----> Downloading ${VM_VERSION}"
     rm -rf ${CACHE_DIR}/vm*
     mkdir -p ${CACHE_DIR}/vm.${VM_VERSION}/
     # TODO: parameterise to handle both Cog64 and Interpreter VMs.
     (cd ${CACHE_DIR}/vm.${VM_VERSION}/ && \
 	curl -O ${VM_URL} && \
-	tar zxvf Squeak-${VM_VERSION}-src.tar.gz && \
+	tar zxf Squeak-${VM_VERSION}-src.tar.gz && \
 	mkdir Squeak-${VM_VERSION}-src/bld && \
 	cd Squeak-${VM_VERSION}-src/bld && \
-	../unix/cmake/configure --with-src=src64 && \
-        make)
+	../unix/cmake/configure --with-src=src64 | indent && \
+        make | indent )
     VM=${CACHE_DIR}/vm.${VM_VERSION}/bin/squeak
 # Remnants of Cog downloading.
 #      curl --silent --show-error --max-time 60 -L -O ${VM_URL} && \
