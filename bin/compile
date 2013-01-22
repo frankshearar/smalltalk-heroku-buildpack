@@ -55,8 +55,8 @@ else
     (cd ${CMAKE_TAR_DIR} && \
 	./bootstrap --prefix=${TARGET} | indent && \
 	make | indent && \
-	make install | indent && \
-	PATH=${TARGET}/bin:$PATH)
+	make install | indent) && \
+	PATH=${TARGET}/bin:$PATH
 
     echo "-----> Downloading ${VM_VERSION}"
     rm -rf ${CACHE_DIR}/vm*
