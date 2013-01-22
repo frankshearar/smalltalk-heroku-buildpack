@@ -29,7 +29,7 @@ SOURCES_VERSION=41
 IMAGE_URL=${BUILDPACK_SQUEAK_BASE_URL}/${MAJOR_VERSION}/Squeak${SQUEAK_VERSION}.tgz
 SOURCES_URL=${BUILDPACK_SQUEAK_BASE_URL}/${MAJOR_VERSION}/SqueakV${SOURCES_VERSION}.sources.gz
 #VM_URL=${BUILDPACK_SQUEAK_BASE_URL}/${MAJOR_VERSION}/unix-linux/coglinux.tgz
-VM_URL="http://www.squeakvm.org/unix/release/Squeak-4.10.2.2614-linux_x86_64.sh"
+VM_URL="http://www.squeakvm.org/unix/release/Squeak-4.10.2.2614-linux_x86_64.tar.gz"
 
 mkdir -p ${CACHE_DIR}
 
@@ -43,9 +43,9 @@ else
     mkdir -p ${CACHE_DIR}/vm.${VM_VERSION}/
     # TODO: parameterise to handle both Cog64 and Interpreter VMs.
     (cd ${CACHE_DIR}/vm.${VM_VERSION}/ && \
-	curl ${VM_URL} > vm-installer.sh && \
-	/bin/sh ./vm-installer.sh -prefix=. && \
-        rm vm-installer.sh)
+	curl -O ${VM_URL} && \
+	cd Squeak-4.10.2.2614-linux_x86_64/platforms/unix && \
+        make WIDTH=64)
     VM=${CACHE_DIR}/vm.${VM_VERSION}/bin/squeak
 # Remnants of Cog downloading.
 #      curl --silent --show-error --max-time 60 -L -O ${VM_URL} && \
