@@ -45,8 +45,10 @@ else
     (cd ${CACHE_DIR}/vm.${VM_VERSION}/ && \
 	curl -O ${VM_URL} && \
 	tar zxvf Squeak-${VM_VERSION}-src.tar.gz && \
-	cd Squeak-${VM_VERSION}-src/platforms/unix && \
-        make WIDTH=64)
+	mkdir Squeak-${VM_VERSION}-src/bld && \
+	cd Squeak-${VM_VERSION}-src/bld && \
+	../unix/cmake/configure --with-src=src64 && \
+        make)
     VM=${CACHE_DIR}/vm.${VM_VERSION}/bin/squeak
 # Remnants of Cog downloading.
 #      curl --silent --show-error --max-time 60 -L -O ${VM_URL} && \
