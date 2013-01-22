@@ -44,11 +44,11 @@ then
 else
     echo "-----> Bootstrapping cmake"
     CMAKE_VERSION="2.8.6"
-    CMAKE_URL="http://www.cmake.org/files/v2.8/cmake-2.8.6.tar.gz"
-    CMAKE_FILE="cmake-${cmake_version}.tar.gz"
-    CMAKE_TAR_DIR="cmake-${cmake_version}"
+    CMAKE_URL="http://www.cmake.org/files/v2.8/cmake-${CMAKE_VERSION}.tar.gz"
+    CMAKE_FILE="cmake-${CMAKE_VERSION}.tar.gz"
+    CMAKE_TAR_DIR="cmake-${CMAKE_VERSION}"
     TARGET=/app/.local
-    echo "Compiling cmake v${cmake_version}..." | indent
+    echo "Compiling cmake v${CMAKE_VERSION}..." | indent
     #Compile cmake
     curl -s ${CMAKE_URL} > ${CMAKE_FILE}
     tar zxf ${CMAKE_FILE}
@@ -56,7 +56,7 @@ else
 	./bootstrap --prefix=${TARGET} | indent && \
 	make | indent && \
 	make install | indent && \
-	PATH=${target}/bin:$PATH)
+	PATH=${TARGET}/bin:$PATH)
 
     echo "-----> Downloading ${VM_VERSION}"
     rm -rf ${CACHE_DIR}/vm*
