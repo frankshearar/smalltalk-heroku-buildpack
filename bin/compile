@@ -91,6 +91,7 @@ else
       tar zxf Squeak${SQUEAK_VERSION}.tgz && \
       gunzip SqueakV${SOURCES_VERSION}.sources.gz && \
       rm Squeak${SQUEAK_VERSION}.tgz)
+    cp -Rp ${CACHE_DIR}/Squeak-${SQUEAK_VERSION} ${TARGET}/Squeak-${SQUEAK_VERSION}
 fi
 
 # Install the application, unless (for testing purposes) we
