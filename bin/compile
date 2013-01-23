@@ -68,7 +68,7 @@ else
 	mkdir Squeak-${VM_VERSION}-src/bld && \
 	cd Squeak-${VM_VERSION}-src/bld && \
 	../unix/cmake/configure --with-src=src64 --prefix=${TARGET}| indent && \
-        make | indent )
+        make install | indent )
     VM=${TARGET}/bin/squeak
 # Remnants of Cog downloading.
 #      curl --silent --show-error --max-time 60 -L -O ${VM_URL} && \
