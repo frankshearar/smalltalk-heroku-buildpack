@@ -88,7 +88,7 @@ else
     (cd ${CACHE_DIR}/Squeak-${SQUEAK_VERSION} && \
       curl --silent --show-error --max-time 60 -L -O ${IMAGE_URL} && \
       curl --silent --show-error --max-time 60 -L -O ${SOURCES_URL} && \
-      tar zxvf Squeak${SQUEAK_VERSION}.tgz && \
+      tar zxf Squeak${SQUEAK_VERSION}.tgz && \
       gunzip SqueakV${SOURCES_VERSION}.sources.gz && \
       rm Squeak${SQUEAK_VERSION}.tgz)
 fi
