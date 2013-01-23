@@ -14,7 +14,7 @@ Currently this only supports Squeak 4.4.
 
 Eventually this should support other Smalltalks, particularly Pharo.
 
-## Usage
+## USAGE
 
 Like other buildpacks you will need to specify the buildpack when creating
 your Heroku application. Something like the following:
@@ -38,16 +38,19 @@ This buildpack's `CACHE_DIR` has a particular layout:
 
 ```
 CACHE_DIR
-  +- cog.rNNNN
-      +- coglinux (containing a Cog VM in its usual layout)
+  +- vm.VERSION
+  +- SqueakV41.sources
   +- Squeak-M.N-KKKK
+      +- SqueakVMJ.sources
       +- SqueakM.N-KKKK.image
       +- SqueakM.N-KKKK.changes
 ```
 
-where `M`, `N`, `NNNN` and `KKKK` are all positive integers.
+where `M`, `N` 'J' and `KKKK` are all positive integers. (Usually 'J = N`.) `VERSION` is either `rNNNN` indicating a Cog VM, or a M.N.K version number, indicating an Interpreter VM.
 
-For the experienced Smalltalkers, you'll note the absence of a sources file. That might change in the future, but it's missing for now because there's much less need for viewing source in a headless image.
+## NOTES
+
+Heroku is a 64 bit platform, and thus requires 64 bit applications. `apt-get` doesn't work on a dyno. Heroku dynos also have an ancient version of glibc - 2.11 - while the prebuilt VMs want 2.14 or 2.15. So we have to build our own VM, which requires us to build our own cmake (!).
 
 ## ACKNOWLEDGEMENTS
 
