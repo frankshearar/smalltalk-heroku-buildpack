@@ -1,4 +1,4 @@
-| installScript log source packages |
+| baseDir log source packages |
 
 log := [:msg | | str |
     str := '-----> ', msg.
@@ -33,11 +33,11 @@ packages do: [:pkg |
                 log value: 'Installing ', conf.
                 (Smalltalk at: conf) loadStable].
 
-installScript := ((Smalltalk at: #UnixProcess) env at: #'BUILD_DIR') , FileDirectory slash , 'install.st'.
-(FileDirectory fileOrDirectoryExists: installScript)
+baseDir := FileDirectory on: ((Smalltalk at: #UnixProcess) env at: #'BUILD_DIR').
+(baseDir fileOrDirectoryExists: 'install.st')
     ifTrue: [ |loader|
         loader := CodeLoader new.
-	FileStream withFileNamed: installScript do: [:f |
+	baseDir fileNamed: 'install.st' do: [:f |
             loader installSourceFile: f]].
 
 WorldState addDeferredUIMessage: [ SmalltalkImage current snapshot: true andQuit: true ].
