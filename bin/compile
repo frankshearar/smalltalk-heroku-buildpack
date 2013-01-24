@@ -67,9 +67,9 @@ else
 	tar zxf Squeak-${VM_VERSION}-src.tar.gz && \
 	mkdir Squeak-${VM_VERSION}-src/bld && \
 	cd Squeak-${VM_VERSION}-src/bld && \
-	../unix/cmake/configure --with-src=src64 --prefix=${BUILD_DIR} | indent && \
+	../unix/cmake/configure --with-src=src64 --prefix=${BUILD_DIR}/squeak | indent && \
         make install | indent )
-    VM=${BUILD_DIR}/bin/squeak
+    VM=${BUILD_DIR}/squeak/bin/squeak
 # Remnants of Cog downloading.
 #      curl --silent --show-error --max-time 60 -L -O ${VM_URL} && \
 #      tar zxf coglinux.tgz && \

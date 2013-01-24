@@ -7,6 +7,7 @@ cat <<EOF
 config_vars:
   SQUEAK_VERSION: "4.4-12327"
   BUILDPACK_SQUEAK_BASE_URL: "http://ftp.squeak.org/4.4/"
+  PATH: "vendor/squeak/bin:$PATH"
 addons:
   heroku-postgresql:dev
 default_process_types:
