@@ -42,23 +42,26 @@ if test -d ${CACHE_DIR}/${VM_VERSION}/
 then
     echo "-----> Using Squeak VM ${VM_VERSION}"
 else
-    # TODO: Check that the system has cmake already!
     echo "-----> Bootstrapping cmake"
-    CMAKE_VERSION="2.8.6"
-    CMAKE_URL="http://www.cmake.org/files/v2.8/cmake-${CMAKE_VERSION}.tar.gz"
-    CMAKE_FILE="cmake-${CMAKE_VERSION}.tar.gz"
-    CMAKE_TAR_DIR="cmake-${CMAKE_VERSION}"
-    TARGET=/app/.local
-    echo "Compiling cmake v${CMAKE_VERSION}..." | indent
-    #Compile cmake
-    curl -s ${CMAKE_URL} > ${CMAKE_FILE}
-    tar zxf ${CMAKE_FILE}
-    (cd ${CMAKE_TAR_DIR} && \
-	./bootstrap --prefix=${TARGET} | indent && \
-	make | indent && \
-	make install | indent) && \
-	PATH=${TARGET}/bin:$PATH
-
+    CMAKE_VERSION=`cmake --version`
+    if test "${CMAKE_VERSION}" != "cmake version 2.8.6"
+    then
+	CMAKE_VERSION="2.8.6"
+	CMAKE_URL="http://www.cmake.org/files/v2.8/cmake-${CMAKE_VERSION}.tar.gz"
+	CMAKE_FILE="cmake-${CMAKE_VERSION}.tar.gz"
+	CMAKE_TAR_DIR="cmake-${CMAKE_VERSION}"
+	TARGET=/app/.local
+	echo "Compiling cmake v${CMAKE_VERSION}..." | indent
+	curl -s ${CMAKE_URL} > ${CMAKE_FILE}
+	tar zxf ${CMAKE_FILE}
+	(cd ${CMAKE_TAR_DIR} && \
+	    ./bootstrap --prefix=${TARGET} | indent && \
+	    make | indent && \
+	    make install | indent) && \
+	    PATH=${TARGET}/bin:$PATH
+    else
+	echo "Using existing ${CMAKE_VERSION}" | indent
+    fi
     echo "-----> Downloading Squeak VM ${VM_VERSION}"
     rm -rf ${CACHE_DIR}/vm*
     mkdir -p ${CACHE_DIR}/vm.${VM_VERSION}/
