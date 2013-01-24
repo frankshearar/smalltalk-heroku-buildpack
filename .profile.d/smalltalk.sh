@@ -1,2 +1,2 @@
 #!/bin/sh
-PATH="$HOME/bin":$PATH
+PATH=$HOME/bin:$PATH
