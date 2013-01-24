@@ -33,7 +33,7 @@ packages do: [:pkg |
                 log value: 'Installing ', conf.
                 (Smalltalk at: conf) loadStable].
 
-installScript := ((Smalltalk at: #UnixProcess) env at: #'BUILD_DIR') / 'install.st').
+installScript := ((Smalltalk at: #UnixProcess) env at: #'BUILD_DIR') / 'install.st'.
 (FileDirectory fileOrDirectoryExists: installScript
     ifTrue: [ |loader|
         loader := CodeLoader new.
