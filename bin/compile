@@ -113,7 +113,7 @@ then
 	*) echo " !     Unknown repository 'type ${REPO_TYPE}'" && exit 1;;
     esac
     export BUILD_DIR
-    ${VM} ${BUILD_DIR}/squeak/image/Squeak${SQUEAK_VERSION}.image ${BASE_DIR}/installers/filetree-installer.st
+    ${VM} -vm-display-null --vm-sound-null ${BUILD_DIR}/squeak/image/Squeak${SQUEAK_VERSION}.image ${BASE_DIR}/installers/filetree-installer.st
 else
     echo "-----> Skipping installation"
 fi
