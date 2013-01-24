@@ -63,23 +63,30 @@ else
 	CMAKE_VERSION=`cmake --version`
 	echo "Using existing ${CMAKE_VERSION}" | indent
     fi
-    echo "-----> Downloading Squeak VM ${VM_VERSION}"
-    rm -rf ${CACHE_DIR}/vm*
-    mkdir -p ${CACHE_DIR}/vm.${VM_VERSION}/
-    # TODO: parameterise to handle both Cog64 and Interpreter VMs.
-    (cd ${CACHE_DIR}/vm.${VM_VERSION}/ && \
-	curl -O ${VM_URL} && \
-	tar zxf Squeak-${VM_VERSION}-src.tar.gz && \
-	mkdir Squeak-${VM_VERSION}-src/bld && \
-	cd Squeak-${VM_VERSION}-src/bld && \
-	../unix/cmake/configure --with-src=src64 --prefix=${BUILD_DIR}/squeak | indent && \
-        make install | indent )
+
     VM=${BUILD_DIR}/squeak/bin/squeak
+    if test -z ${VM}
+    then
+	echo "-----> Downloading Squeak VM ${VM_VERSION}"
+	rm -rf ${CACHE_DIR}/vm*
+	mkdir -p ${CACHE_DIR}/vm.${VM_VERSION}/
+         # TODO: parameterise to handle both Cog64 and Interpreter VMs.
+	(cd ${CACHE_DIR}/vm.${VM_VERSION}/ && \
+	    curl -O ${VM_URL} && \
+	    tar zxf Squeak-${VM_VERSION}-src.tar.gz && \
+	    mkdir Squeak-${VM_VERSION}-src/bld && \
+	    cd Squeak-${VM_VERSION}-src/bld && \
+	    ../unix/cmake/configure --with-src=src64 --prefix=${BUILD_DIR}/squeak | indent && \
+            make install | indent )
+
 # Remnants of Cog downloading.
 #      curl --silent --show-error --max-time 60 -L -O ${VM_URL} && \
 #      tar zxf coglinux.tgz && \
 #      rm coglinux.tgz)
 #    VM=${CACHE_DIR}/vm.${VM_VERSION}/coglinux/bin/squeak
+    else
+	echo "-----> Using existing Squeak VM"
+    fi
 fi
 
 # Set up the base image
@@ -113,7 +120,7 @@ then
 	*) echo " !     Unknown repository 'type ${REPO_TYPE}'" && exit 1;;
     esac
     export BUILD_DIR
-    ${VM} -vm-display-null -vm-sound-null ${BUILD_DIR}/squeak/image/Squeak${SQUEAK_VERSION}.image ${BASE_DIR}/installers/filetree-installer.st
+    ${VM} -vm-sound-null ${BUILD_DIR}/squeak/image/Squeak${SQUEAK_VERSION}.image ${BASE_DIR}/installers/filetree-installer.st
 else
     echo "-----> Skipping installation"
 fi

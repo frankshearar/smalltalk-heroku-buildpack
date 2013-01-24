@@ -34,7 +34,7 @@ packages do: [:pkg |
                 (Smalltalk at: conf) loadStable].
 
 installScript := ((Smalltalk at: #UnixProcess) env at: #'BUILD_DIR') / 'install.st'.
-(FileDirectory fileOrDirectoryExists: installScript
+(FileDirectory fileOrDirectoryExists: installScript)
     ifTrue: [ |loader|
         loader := CodeLoader new.
 	FileStream withFileNamed: installScript do: [:f |
