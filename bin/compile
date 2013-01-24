@@ -13,6 +13,7 @@ BASE_DIR=`dirname $SCRIPT`/../
 BUILD_DIR=$(cd "$1" && pwd)
 CACHE_DIR=$2
 
+echo "-----> Buildpack version `git rev-parse HEAD`"
 echo "-----> BUILD_DIR=${BUILD_DIR}"
 echo "-----> CACHE_DIR=${CACHE_DIR}"
 
