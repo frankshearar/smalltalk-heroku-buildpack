@@ -43,10 +43,9 @@ then
     echo "-----> Using Squeak VM ${VM_VERSION}"
 else
     echo "-----> Bootstrapping cmake"
-    CMAKE_VERSION=`cmake --version`
-    if test "${CMAKE_VERSION}" != "cmake version 2.8.0"
+    if ! which cmake
     then
-	CMAKE_VERSION="2.8.0"
+	CMAKE_VERSION="2.8.6"
 	CMAKE_URL="http://www.cmake.org/files/v2.8/cmake-${CMAKE_VERSION}.tar.gz"
 	CMAKE_FILE="cmake-${CMAKE_VERSION}.tar.gz"
 	CMAKE_TAR_DIR="cmake-${CMAKE_VERSION}"
@@ -60,6 +59,7 @@ else
 	    make install | indent) && \
 	    PATH=${TARGET}/bin:$PATH
     else
+	CMAKE_VERSION=`cmake --version`
 	echo "Using existing ${CMAKE_VERSION}" | indent
     fi
     echo "-----> Downloading Squeak VM ${VM_VERSION}"
