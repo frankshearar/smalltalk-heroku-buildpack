@@ -67,7 +67,7 @@ else
 	tar zxf Squeak-${VM_VERSION}-src.tar.gz && \
 	mkdir Squeak-${VM_VERSION}-src/bld && \
 	cd Squeak-${VM_VERSION}-src/bld && \
-	../unix/cmake/configure --with-src=src64 --prefix=${BUILD_DIR}/bin | indent && \
+	../unix/cmake/configure --with-src=src64 --prefix=${BUILD_DIR} | indent && \
         make install | indent )
     VM=${BUILD_DIR}/bin/squeak
 # Remnants of Cog downloading.
