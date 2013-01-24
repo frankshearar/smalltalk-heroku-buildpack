@@ -42,6 +42,7 @@ if test -d ${CACHE_DIR}/${VM_VERSION}/
 then
     echo "-----> Using Squeak VM ${VM_VERSION}"
 else
+    # TODO: Check that the system has cmake already!
     echo "-----> Bootstrapping cmake"
     CMAKE_VERSION="2.8.6"
     CMAKE_URL="http://www.cmake.org/files/v2.8/cmake-${CMAKE_VERSION}.tar.gz"
