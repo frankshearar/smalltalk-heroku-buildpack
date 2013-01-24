@@ -65,8 +65,10 @@ else
     fi
 
     VM=${BUILD_DIR}/squeak/bin/squeak
-    if test -z ${VM}
+    if test -e ${VM}
     then
+	echo "-----> Using existing Squeak VM"
+    else
 	echo "-----> Downloading Squeak VM ${VM_VERSION}"
 	rm -rf ${CACHE_DIR}/vm*
 	mkdir -p ${CACHE_DIR}/vm.${VM_VERSION}/
@@ -84,8 +86,6 @@ else
 #      tar zxf coglinux.tgz && \
 #      rm coglinux.tgz)
 #    VM=${CACHE_DIR}/vm.${VM_VERSION}/coglinux/bin/squeak
-    else
-	echo "-----> Using existing Squeak VM"
     fi
 fi
 
