@@ -80,6 +80,7 @@ else
 	    cd Squeak-${VM_VERSION}-src/bld && \
 	    ../unix/cmake/configure --with-src=src64 --prefix=${BUILD_DIR}/squeak | indent && \
             make install | indent )
+	ln -s /usr/lib/licrypto.so ${BUILD_DIR}/squeak/lib/libcrypto.so
 
 # Remnants of Cog downloading.
 #      curl --silent --show-error --max-time 60 -L -O ${VM_URL} && \
