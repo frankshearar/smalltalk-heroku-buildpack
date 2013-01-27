@@ -52,6 +52,8 @@ where `M`, `N` 'J' and `KKKK` are all positive integers. (Usually 'J = N`.) `VER
 
 Heroku is a 64 bit platform, and thus requires 64 bit applications. `apt-get` doesn't work on a dyno. Heroku dynos also have an ancient version of glibc - 2.11 - while the prebuilt VMs want 2.14 or 2.15. So we have to build our own VM, which requires us to build our own cmake (!).
 
+Eventually, we want to produce a custom Squeak image that is tailored for operation in the Heroku environment: using an Interpreter compatible image, OSProcess preloaded, and so on. Right now we forgo that because, well, it's been really difficult to get this much working. We defer image production to the application, for now.
+
 ## ACKNOWLEDGEMENTS
 
 The [cabal-heroku-buildpack](https://github.com/mbbx6spp/cabal-heroku-buildpack) provided extensive inspiration for this buildpack.
