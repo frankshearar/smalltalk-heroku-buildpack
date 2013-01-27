@@ -12,7 +12,7 @@ EXPERIMENTAL
 
 Currently this only supports Squeak 4.4.
 
-Eventually this should support other Smalltalks, particularly Pharo.
+Eventually this should support other Smalltalks, particularly Pharo. It will also support various kinds of fileouts: filetree, chunk format, Cuis packages and so on.
 
 ## USAGE
 
